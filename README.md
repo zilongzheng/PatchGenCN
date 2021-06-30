@@ -8,6 +8,8 @@ In CVPR 2021 <span style="color:red;font-weight:bold">(Oral)</span>
 
 [**Paper**](https://openaccess.thecvf.com/content/CVPR2021/papers/Zheng_Patchwise_Generative_ConvNet_Training_Energy-Based_Models_From_a_Single_Natural_CVPR_2021_paper.pdf) | [**Project**](https://zilongzheng.github.io/PatchGenCN/)
 
+![](assets/example.png)
+
 ## Getting Started
 This codebase is tested using Ubuntu 16.04, Python 3.5 and a single NVIDIA RTX 2080 GPU. Similar configurations are preferred.
 
