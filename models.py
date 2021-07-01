@@ -4,7 +4,7 @@ except ImportError:
     import tensorflow as tf
 from ops import snconv2d
 
-class EBM():
+class PatchGenCN():
     def __init__(self, img_size, opt, name):
         self.img_nc = opt.img_nc
         self.img_size = img_size
@@ -15,13 +15,13 @@ class EBM():
         activation = tf.nn.elu
         norm_layer = None
         if self.img_size < 32:
-            return descriptor_sm(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
+            return ebm_sm(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
         elif self.img_size < 64:
-            return descriptor_sm(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
+            return ebm_sm(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
         elif self.img_size < 128:
-            return descriptor_md(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
+            return ebm_md(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
         elif self.img_size < 256:
-            return descriptor_md(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
+            return ebm_md(img, kernel_init=kernel_init, norm_layer=norm_layer, activation=activation, name=self.name)
         else:
             raise NotImplementedError("Current model does not support image size >= 256.")
 
@@ -42,7 +42,7 @@ def conv_block(inputs, num_filters, kernel_size, strides, padding, kernel_init, 
     return out
 
 
-def descriptor_sm(img, kernel_init, norm_layer, activation, name):
+def ebm_sm(img, kernel_init, norm_layer, activation, name):
     with tf.variable_scope(name, reuse=tf.AUTO_REUSE):
         out = conv_block(img, 64, 3, strides=1, padding='valid', kernel_init=kernel_init, norm_layer=norm_layer, activation=activation)
         out = conv_block(out, 32, 3, strides=1, padding='valid', kernel_init=kernel_init, norm_layer=norm_layer, activation=activation)
@@ -54,7 +54,7 @@ def descriptor_sm(img, kernel_init, norm_layer, activation, name):
 
         return out
 
-def descriptor_md(img, kernel_init, norm_layer, activation, name):
+def ebm_md(img, kernel_init, norm_layer, activation, name):
     with tf.variable_scope(name, reuse=tf.AUTO_REUSE):
         # receptive_field = (15 - 1) * 1 + 3 = 17
         out = conv_block(img, 128, 3, strides=1, padding='valid', kernel_init=kernel_init, norm_layer=norm_layer, activation=activation)
@@ -66,7 +66,7 @@ def descriptor_md(img, kernel_init, norm_layer, activation, name):
         return out
 
 
-def descriptor_lg(img, kernel_init, norm_layer, activation, name):
+def ebm_lg(img, kernel_init, norm_layer, activation, name):
     with tf.variable_scope(name, reuse=tf.AUTO_REUSE):
         out = conv_block(img, 128, 3, strides=1, padding='valid', kernel_init=kernel_init, norm_layer=norm_layer, activation=activation)
         out = conv_block(out, 128, 3, strides=1, padding='valid', kernel_init=kernel_init, norm_layer=norm_layer, activation=activation)

@@ -161,7 +161,7 @@ def build_models(real_img, opt, train=True):
         if i == 0 and train:
             opt.min_size = max(img_h, img_w)
 
-        netE = models.EBM(max(img_h, img_w), opt, name='ebm{}x{}'.format(img_w, img_h))
+        netE = models.PatchGenCN(max(img_h, img_w), opt, name='ebm{}x{}'.format(img_w, img_h))
         obs_pl = tf.placeholder(
             tf.float32, [None, img_h + opt.pad_size * 2, img_w + opt.pad_size * 2, opt.img_nc], 'obs{}x{}'.format(img_w, img_h))
         syn_pl = tf.placeholder(
